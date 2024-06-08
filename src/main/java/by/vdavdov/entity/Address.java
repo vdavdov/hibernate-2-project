@@ -16,7 +16,7 @@ import java.util.Date;
 @AllArgsConstructor
 @Getter
 @Setter
-@Table(name = "address")
+@Table(name = "address", schema = "movie")
 public class Address {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

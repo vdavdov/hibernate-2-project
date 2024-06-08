@@ -1,10 +1,12 @@
 package by.vdavdov.entity;
 
+
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.util.Date;
@@ -12,14 +14,18 @@ import java.util.Date;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "staff", schema = "movie")
-@Setter
 @Getter
-public class Staff {
+@Setter
+@Table(name = "customer", schema = "movie")
+public class Customer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "staff_id")
+    @Column(name = "customer_id")
     private Long id;
+
+    @ManyToOne
+    @JoinColumn(name = "store_id", nullable = false)
+    private Store store;
 
     @Column(name = "first_name", nullable = false, length = 45)
     private String firstName;
@@ -27,32 +33,24 @@ public class Staff {
     @Column(name = "last_name", nullable = false, length = 45)
     private String lastName;
 
-    @Lob
-    @Column(name = "picture")
-    private byte[] picture;
-
-    @Column(name = "email", length = 45)
+    @Column(name = "email", length = 50)
     private String email;
+
+    @ManyToOne
+    @JoinColumn(name = "address_id")
+    private Address address;
 
     @Column(name = "active", columnDefinition = "TINYINT")
     private boolean active;
 
-    @Column(name = "username", nullable = false, length = 16)
-    private String username;
-
-    @Column(name = "password", length = 40)
-    private String password;
+    @CreationTimestamp
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "create_date")
+    private Date created;
 
     @UpdateTimestamp
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "last_update")
     private Date updated;
 
-    @JoinColumn(name = "address_id", nullable = false)
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Address address;
-
-    @JoinColumn(name = "store_id", nullable = false)
-    @ManyToOne
-    private Store store;
 }
