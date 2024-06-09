@@ -59,12 +59,9 @@ public class Film {
     @Column(name = "last_update")
     private Date updated;
 
-    @ColumnDefault(value = "G")
     @Column(name = "rating", columnDefinition = "enum ('G', 'PG', 'PG-13', 'R', 'NC-17') default 'G'")
     private RatingEnum rating;
 
-    //    @Getter(AccessLevel.NONE)
-//    @Setter(AccessLevel.NONE)
     @Column(name = "special_features", columnDefinition = "set ('Trailers', 'Commentaries', 'Deleted Scenes', 'Behind the Scenes')")
     private FeaturesEnum specialFeatures;
 
