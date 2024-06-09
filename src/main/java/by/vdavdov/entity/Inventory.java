@@ -1,5 +1,6 @@
 package by.vdavdov.entity;
 
+
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -12,13 +13,13 @@ import java.util.Date;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "store", schema = "movie")
-@Setter
 @Getter
-public class Store {
+@Setter
+@Table(name = "inventory", schema = "movie")
+public class Inventory {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "store_id")
+    @Column(name = "inventory_id")
     private Long id;
 
     @UpdateTimestamp
@@ -26,11 +27,11 @@ public class Store {
     @Column(name = "last_update")
     private Date updated;
 
-    @OneToOne
-    @JoinColumn(name = "address_id")
-    private Address address;
+    @ManyToOne
+    @JoinColumn(name = "store_id")
+    private Store store;
 
-    @OneToOne
-    @JoinColumn(name = "staff_id")
-    private Staff staff;
+    @ManyToOne
+    @JoinColumn(name = "film_id")
+    private Film film;
 }

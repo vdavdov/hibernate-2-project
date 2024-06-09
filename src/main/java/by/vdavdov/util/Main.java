@@ -1,8 +1,12 @@
 package by.vdavdov.util;
 
+import by.vdavdov.constants.FeaturesEnum;
+import by.vdavdov.constants.RatingEnum;
 import by.vdavdov.entity.*;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+
+import java.math.BigDecimal;
 
 public class Main {
     public static void main(String[] args) {
@@ -54,7 +58,30 @@ public class Main {
             store.setStaff(staff);
             session.persist(store);
 
+            Actor actor = new Actor();
+            actor.setFirstName("Vsevolod");
+            actor.setLastName("Davydov");
+            session.persist(actor);
+
+            Language language = new Language();
+            language.setName("Russian");
+            session.persist(language);
+
+            Film film = new Film();
+            film.setDescription("dad");
+            film.setLanguage(language);
+            film.setRating(RatingEnum.R);
+            film.setTitle("BigBoss");
+            film.setLength((short) 124);
+            film.setRentalDuration(123);
+            film.setReplacementCost(BigDecimal.valueOf(12.00));
+            film.setRentalRate(BigDecimal.valueOf(4.00));
+            film.setSpecialFeatures(FeaturesEnum.Behind_the_Scenes);
+            session.persist(film);
+
             session.getTransaction().commit();
+        } catch (Exception e) {
+            sessionFactory.getCurrentSession().getTransaction().rollback();
         }
     }
 }

@@ -11,12 +11,20 @@ public class MySessionFactory {
     private MySessionFactory() {
         sessionFactory = new Configuration()
                 .configure("hibernate.cfg.xml")
+                .addAnnotatedClass(Language.class)
+                .addAnnotatedClass(Actor.class)
                 .addAnnotatedClass(City.class)
                 .addAnnotatedClass(Country.class)
                 .addAnnotatedClass(Address.class)
                 .addAnnotatedClass(Staff.class)
                 .addAnnotatedClass(Store.class)
                 .addAnnotatedClass(Customer.class)
+                .addAnnotatedClass(Film.class)
+                .addAnnotatedClass(Inventory.class)
+                .addAnnotatedClass(Rental.class)
+                .addAnnotatedClass(FilmText.class)
+                .addAnnotatedClass(Payment.class)
+                .addAnnotatedClass(Category.class)
                 .buildSessionFactory();
     }
 

@@ -14,7 +14,6 @@ import org.hibernate.annotations.UpdateTimestamp;
 import java.math.BigDecimal;
 import java.time.Year;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -43,7 +42,7 @@ public class Film {
     private Language language;
 
     @ManyToOne
-    @JoinColumn(name = "language_id")
+    @JoinColumn(name = "original_language_id")
     private Language originalLanguage;
 
     @Column(name = "rental_duration", columnDefinition = "tinyint unsigned default 3", nullable = false)
@@ -69,5 +68,17 @@ public class Film {
 
     @Column(name = "special_features")
     private FeaturesEnum specialFeatures;
+
+    @ManyToMany
+    @JoinTable(name = "film_actor",
+            joinColumns = @JoinColumn(name = "film_id", referencedColumnName = "film_id"),
+            inverseJoinColumns = @JoinColumn(name = "actor_id", referencedColumnName = "actor_id"))
+    private Set<Actor> actors;
+
+    @ManyToMany
+    @JoinTable(name = "film_category",
+            joinColumns = @JoinColumn(name = "film_id", referencedColumnName = "film_id"),
+            inverseJoinColumns = @JoinColumn(name = "category_id", referencedColumnName = "category_id"))
+    private Set<Category> categories;
 
 }
