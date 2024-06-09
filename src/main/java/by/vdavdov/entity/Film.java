@@ -4,10 +4,7 @@ package by.vdavdov.entity;
 import by.vdavdov.constants.FeaturesEnum;
 import by.vdavdov.constants.RatingEnum;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -26,35 +23,35 @@ public class Film {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "film_id")
-    private Long id;
+    private Short id;
 
     @Column(name = "title", nullable = false)
     private String title;
 
-    @Column(name = "description")
+    @Column(name = "description", columnDefinition = "text")
     private String description;
 
     @Column(name = "release_year", columnDefinition = "year")
     private Year year;
 
     @ManyToOne
-    @JoinColumn(name = "language_id", nullable = false)
+    @JoinColumn(name = "language_id")
     private Language language;
 
     @ManyToOne
     @JoinColumn(name = "original_language_id")
     private Language originalLanguage;
 
-    @Column(name = "rental_duration", columnDefinition = "tinyint unsigned default 3", nullable = false)
-    private Integer rentalDuration;
+    @Column(name = "rental_duration", nullable = false)
+    private Byte rentalDuration;
 
-    @Column(name = "rental_rate", nullable = false, scale = 2, precision = 4)
+    @Column(name = "rental_rate", nullable = false)
     private BigDecimal rentalRate;
 
     @Column(name = "length")
     private Short length;
 
-    @Column(name = "replacement_cost", nullable = false, scale = 2, precision = 5)
+    @Column(name = "replacement_cost", nullable = false)
     private BigDecimal replacementCost;
 
     @UpdateTimestamp
@@ -63,10 +60,12 @@ public class Film {
     private Date updated;
 
     @ColumnDefault(value = "G")
-    @Column(name = "rating", columnDefinition = "enum ('G', 'PG', 'PG-13', 'R', 'NC-17') default 'G' ")
+    @Column(name = "rating", columnDefinition = "enum ('G', 'PG', 'PG-13', 'R', 'NC-17') default 'G'")
     private RatingEnum rating;
 
-    @Column(name = "special_features")
+    //    @Getter(AccessLevel.NONE)
+//    @Setter(AccessLevel.NONE)
+    @Column(name = "special_features", columnDefinition = "set ('Trailers', 'Commentaries', 'Deleted Scenes', 'Behind the Scenes')")
     private FeaturesEnum specialFeatures;
 
     @ManyToMany

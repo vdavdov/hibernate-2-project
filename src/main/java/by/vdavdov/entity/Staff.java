@@ -19,7 +19,7 @@ public class Staff {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "staff_id")
-    private Long id;
+    private Byte id;
 
     @Column(name = "first_name", nullable = false, length = 45)
     private String firstName;
@@ -28,14 +28,14 @@ public class Staff {
     private String lastName;
 
     @Lob
-    @Column(name = "picture")
+    @Column(name = "picture", columnDefinition = "BLOB")
     private byte[] picture;
 
     @Column(name = "email", length = 45)
     private String email;
 
-    @Column(name = "active", columnDefinition = "TINYINT")
-    private boolean active;
+    @Column(name = "active", columnDefinition = "BIT")
+    private Boolean active;
 
     @Column(name = "username", nullable = false, length = 16)
     private String username;

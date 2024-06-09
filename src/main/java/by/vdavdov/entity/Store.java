@@ -19,7 +19,7 @@ public class Store {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "store_id")
-    private Long id;
+    private Byte id;
 
     @UpdateTimestamp
     @Temporal(TemporalType.TIMESTAMP)
@@ -31,6 +31,6 @@ public class Store {
     private Address address;
 
     @OneToOne
-    @JoinColumn(name = "staff_id")
+    @JoinColumn(name = "manager_staff_id")
     private Staff staff;
 }

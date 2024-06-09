@@ -19,9 +19,9 @@ public class Language {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "language_id")
-    private Long id;
+    private Byte id;
 
-    @Column(name = "name", nullable = false, length = 20)
+    @Column(name = "name", columnDefinition = "char", nullable = false, length = 20)
     private String name;
 
     @UpdateTimestamp

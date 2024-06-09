@@ -20,7 +20,7 @@ public class Actor {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "actor_id")
-    private Long id;
+    private Short id;
 
     @Column(name = "first_name", nullable = false, length = 45)
     private String firstName;

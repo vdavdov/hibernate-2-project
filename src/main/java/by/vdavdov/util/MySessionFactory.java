@@ -8,9 +8,10 @@ public class MySessionFactory {
     private final SessionFactory sessionFactory;
     private static MySessionFactory instance;
 
-    private MySessionFactory() {
+    public MySessionFactory() {
         sessionFactory = new Configuration()
                 .configure("hibernate.cfg.xml")
+                .addAnnotatedClass(Film.class)
                 .addAnnotatedClass(Language.class)
                 .addAnnotatedClass(Actor.class)
                 .addAnnotatedClass(City.class)
@@ -19,7 +20,6 @@ public class MySessionFactory {
                 .addAnnotatedClass(Staff.class)
                 .addAnnotatedClass(Store.class)
                 .addAnnotatedClass(Customer.class)
-                .addAnnotatedClass(Film.class)
                 .addAnnotatedClass(Inventory.class)
                 .addAnnotatedClass(Rental.class)
                 .addAnnotatedClass(FilmText.class)

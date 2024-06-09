@@ -22,7 +22,11 @@ public class Payment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "payment_id")
-    private Long id;
+    private Short id;
+
+    @ManyToOne
+    @JoinColumn(name = "staff_id")
+    private Staff staff;
 
     @ManyToOne
     @JoinColumn(name = "customer_id")
@@ -32,7 +36,7 @@ public class Payment {
     @JoinColumn(name = "rental_id")
     private Rental rental;
 
-    @Column(name = "amount", nullable = false, precision = 5, scale = 2)
+    @Column(name = "amount", nullable = false)
     private BigDecimal amount;
 
     @Column(name = "payment_date", nullable = false)

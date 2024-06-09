@@ -22,12 +22,12 @@ public class City {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "city_id")
-    private Long id;
+    private Short id;
 
     @Column(name = "city", nullable = false)
     private String name;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "country_id")
     @Cascade(CascadeType.ALL)
     private Country country;
