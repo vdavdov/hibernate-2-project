@@ -16,6 +16,7 @@ public class MySessionFactory {
                 .addAnnotatedClass(Address.class)
                 .addAnnotatedClass(Staff.class)
                 .addAnnotatedClass(Store.class)
+                .addAnnotatedClass(Customer.class)
                 .buildSessionFactory();
     }
 

@@ -12,12 +12,12 @@ public class Main {
 
             Country country = new Country();
             country.setName("Russia");
-            session.save(country);
+            session.persist(country);
 
             City city = new City();
             city.setCountry(country);
             city.setName("Togliatti");
-            session.save(city);
+            session.persist(city);
 
             Address address = new Address();
             address.setCity(city);
@@ -25,11 +25,20 @@ public class Main {
             address.setDistrict("Samarskaya");
             address.setPostalCode("90210");
             address.setPhone("+7(987)-947-89-62");
-            session.save(address);
+            session.persist(address);
 
             Store store = new Store();
             store.setAddress(address);
-            session.save(store);
+            session.persist(store);
+
+            Customer customer = new Customer();
+            customer.setFirstName("Vsevolod");
+            customer.setLastName("Davydov");
+            customer.setActive(true);
+            customer.setEmail("vsevolod@gmail.com");
+            customer.setAddress(address);
+            customer.setStore(store);
+            session.persist(customer);
 
             Staff staff = new Staff();
             staff.setStore(store);
@@ -40,10 +49,10 @@ public class Main {
             staff.setPassword("sevva6363");
             staff.setUsername("vdavdov");
             staff.setActive(true);
-            session.save(staff);
+            session.persist(staff);
 
             store.setStaff(staff);
-            session.save(store);
+            session.persist(store);
 
             session.getTransaction().commit();
         }
