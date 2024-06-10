@@ -7,7 +7,7 @@ import org.hibernate.SessionFactory;
 import java.util.List;
 
 @Transactional
-public class BaseDAO<T> {
+public abstract class BaseDAO<T> {
     private final Class<T> clazz;
     private final SessionFactory sessionFactory;
 
