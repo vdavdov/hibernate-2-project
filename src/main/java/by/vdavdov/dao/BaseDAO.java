@@ -17,24 +17,24 @@ public class BaseDAO<T> {
     }
 
     public T getById(final Long id) {
-        return sessionFactory.getCurrentSession().get(clazz, id);
+        return getCurrentSession().get(clazz, id);
     }
 
     public T save(final T entity) {
-        sessionFactory.getCurrentSession().persist(entity);
+        getCurrentSession().persist(entity);
         return entity;
     }
 
     public void delete(final T entity) {
-        sessionFactory.getCurrentSession().remove(entity);
+        getCurrentSession().remove(entity);
     }
 
     public List<T> getAll() {
-        return sessionFactory.getCurrentSession().createQuery("from" + clazz.getName(), clazz).list();
+        return getCurrentSession().createQuery("from" + clazz.getName(), clazz).list();
     }
 
     public T update(final T entity) {
-        return sessionFactory.getCurrentSession().merge(entity);
+        return getCurrentSession().merge(entity);
     }
 
 
