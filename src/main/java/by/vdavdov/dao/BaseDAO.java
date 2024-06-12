@@ -1,19 +1,21 @@
 package by.vdavdov.dao;
 
-import jakarta.transaction.Transactional;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
 import java.util.List;
 
-@Transactional
 public abstract class BaseDAO<T> {
     private final Class<T> clazz;
     private final SessionFactory sessionFactory;
 
-    public BaseDAO(final Class<T> clazz, final SessionFactory sessionFactory) {
+    public BaseDAO(final Class<T> clazz, SessionFactory sessionFactory) {
         this.clazz = clazz;
         this.sessionFactory = sessionFactory;
+    }
+
+    public T findById(final Long id) {
+        return getCurrentSession().find(clazz, id);
     }
 
     public T getById(final Long id) {
@@ -37,10 +39,8 @@ public abstract class BaseDAO<T> {
         return getCurrentSession().merge(entity);
     }
 
-
-    public Session getCurrentSession() {
+    protected Session getCurrentSession() {
         return sessionFactory.getCurrentSession();
     }
-
 
 }

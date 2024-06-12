@@ -8,9 +8,9 @@ import lombok.ToString;
 public enum RatingEnum {
     G,
     PG,
-    PG_13("PG-13"),
+    PG13("PG-13"),
     R,
-    NC_17("NC-17");
+    NC17("NC-17");
 
     private final String value;
 

@@ -6,12 +6,11 @@
         </Console>
     </Appenders>
     <Loggers>
-        <Root level="debug">
-            <AppenderRef ref="Console"/>
-        </Root>
-        <Logger name="com.p6spy" level="debug">
+        <Logger name="org.hibernate" level="INFO" additivity="false">
             <AppenderRef ref="Console"/>
         </Logger>
+        <Root level="DEBUG">
+            <AppenderRef ref="Console"/>
+        </Root>
     </Loggers>
 </Configuration>
-   
