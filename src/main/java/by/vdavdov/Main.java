@@ -72,6 +72,7 @@ public class Main {
         Customer customer = main.addNewCustomer();
         System.out.println(customer);
         System.out.println(main.returnFilm());
+        main.addNewRental();
     }
 
     public Customer addNewCustomer() {
@@ -125,4 +126,29 @@ public class Main {
         }
         return null;
     }
+
+    public void addNewRental() {
+        try (Session session = sessionFactory.getCurrentSession()) {
+            session.beginTransaction();
+
+            Staff staff = staffDAO.findById(1L);
+            Customer customer = customerDAO.findById(554L);
+            Inventory inventory = inventoryDAO.findById(1L);
+
+            Rental rental = new Rental();
+            rental.setStaff(staff);
+            rental.setCustomer(customer);
+            rental.setInventory(inventory);
+            rental.setRentalDate(LocalDateTime.now());
+
+            rentalDAO.save(rental);
+
+            log.log(Level.INFO, "-----------Rental created with id {}", rental.getId());
+            session.getTransaction().commit();
+        } catch (Exception e) {
+            log.log(Level.ERROR, "Couldn't add new rental with", e);
+        }
+    }
+
+
 }
