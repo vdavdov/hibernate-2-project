@@ -32,23 +32,23 @@ public class Main {
     private final StoreDAO storeDAO;
 
     public Main() {
-        sessionFactory = new Configuration()
-                .configure("hibernate.cfg.xml")
-                .addAnnotatedClass(Film.class)
-                .addAnnotatedClass(Language.class)
-                .addAnnotatedClass(Actor.class)
-                .addAnnotatedClass(City.class)
-                .addAnnotatedClass(Country.class)
-                .addAnnotatedClass(Address.class)
-                .addAnnotatedClass(Staff.class)
-                .addAnnotatedClass(Store.class)
-                .addAnnotatedClass(Customer.class)
-                .addAnnotatedClass(Inventory.class)
-                .addAnnotatedClass(Rental.class)
-                .addAnnotatedClass(FilmText.class)
-                .addAnnotatedClass(Payment.class)
-                .addAnnotatedClass(Category.class)
-                .buildSessionFactory();
+        Configuration configuration = new Configuration();
+        configuration.configure("hibernate.cfg.xml");
+        configuration.addAnnotatedClass(Film.class);
+        configuration.addAnnotatedClass(Language.class);
+        configuration.addAnnotatedClass(Actor.class);
+        configuration.addAnnotatedClass(City.class);
+        configuration.addAnnotatedClass(Country.class);
+        configuration.addAnnotatedClass(Address.class);
+        configuration.addAnnotatedClass(Staff.class);
+        configuration.addAnnotatedClass(Store.class);
+        configuration.addAnnotatedClass(Customer.class);
+        configuration.addAnnotatedClass(Inventory.class);
+        configuration.addAnnotatedClass(Rental.class);
+        configuration.addAnnotatedClass(FilmText.class);
+        configuration.addAnnotatedClass(Payment.class);
+        configuration.addAnnotatedClass(Category.class);
+        sessionFactory = configuration.buildSessionFactory();
 
         actorDAO = new ActorDAO(sessionFactory);
         addressDAO = new AddressDAO(sessionFactory);
@@ -69,8 +69,8 @@ public class Main {
 
     public static void main(String[] args) {
         Main main = new Main();
-//        Customer customer = main.addNewCustomer();
-//        System.out.println(customer);
+        Customer customer = main.addNewCustomer();
+        System.out.println(customer);
         System.out.println(main.returnFilm());
     }
 
@@ -111,8 +111,8 @@ public class Main {
     public Customer returnFilm() {
         try (Session session = sessionFactory.getCurrentSession()) {
             session.beginTransaction();
-            Customer customer = customerDAO.findById(229L);
-            Rental rental = rentalDAO.findById(13295L);
+            Customer customer = customerDAO.findById(64L);
+            Rental rental = rentalDAO.findById(13333L);
 
             rental.setReturnDate(LocalDateTime.now());
             rentalDAO.save(rental);

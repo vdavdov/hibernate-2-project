@@ -2,7 +2,9 @@ package by.vdavdov.util;
 
 import by.vdavdov.constants.RatingEnum;
 import jakarta.persistence.AttributeConverter;
+import jakarta.persistence.Converter;
 
+@Converter(autoApply = true)
 public class RatingConverter implements AttributeConverter<RatingEnum, String> {
 
     @Override
