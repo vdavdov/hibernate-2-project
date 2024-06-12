@@ -1,16 +1,17 @@
-package by.vdavdov;
+package by.vdavdov.util;
 
 
-import by.vdavdov.constants.FeaturesEnum;
-import by.vdavdov.constants.RatingEnum;
+import by.vdavdov.constants.LogConstants;
 import by.vdavdov.dao.*;
 import by.vdavdov.entity.*;
 import lombok.Getter;
 import lombok.extern.log4j.Log4j2;
-import org.apache.logging.log4j.Level;
-import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
+import by.vdavdov.constants.FeaturesEnum;
+import by.vdavdov.constants.RatingEnum;
+import org.apache.logging.log4j.Level;
+import org.hibernate.Session;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -21,7 +22,7 @@ import java.util.Set;
 
 @Log4j2
 @Getter
-public class Main {
+public class InitTestData {
     private final SessionFactory sessionFactory;
     private final ActorDAO actorDAO;
     private final AddressDAO addressDAO;
@@ -38,7 +39,7 @@ public class Main {
     private final StaffDAO staffDAO;
     private final StoreDAO storeDAO;
 
-    public Main() {
+    public InitTestData() {
         Configuration configuration = new Configuration();
         configuration.configure("hibernate.cfg.xml");
         configuration.addAnnotatedClass(Film.class);
@@ -74,13 +75,12 @@ public class Main {
 
     }
 
-    public static void main(String[] args) {
-        Main main = new Main();
-        Customer customer = main.addNewCustomer();
+    public void init() {
+        Customer customer = addNewCustomer();
         System.out.println(customer);
-        main.returnFilm();
-        main.addNewRental();
-        Film film = main.addNewFilm();
+        rentalReturn();
+        addNewRental();
+        Film film = addNewFilm();
         System.out.println(film);
     }
 
@@ -109,16 +109,16 @@ public class Main {
             customer.setActive(true);
             customerDAO.save(customer);
 
-            log.log(Level.INFO, "-----------New customer created with id {}", customer.getId() + "---------------");
+            log.log(Level.INFO, LogConstants.SUCCESSFUL_CREATE_CUSTOMER, customer.getId());
             session.getTransaction().commit();
             return customer;
         } catch (Exception e) {
-            log.log(Level.ERROR, "Couldn't add new customer with", e);
+            log.log(Level.ERROR, LogConstants.FAILED_CREATE_CUSTOMER, e);
         }
         return null;
     }
 
-    public void returnFilm() {
+    public void rentalReturn() {
         try (Session session = sessionFactory.getCurrentSession()) {
             session.beginTransaction();
             Customer customer = customerDAO.findById(64L);
@@ -127,10 +127,10 @@ public class Main {
             rental.setReturnDate(LocalDateTime.now());
             rentalDAO.save(rental);
 
-            log.log(Level.INFO, "-----------Customer {} successfully return film", customer.getId() + "---------------");
+            log.log(Level.INFO, LogConstants.SUCCESSFUL_RETURN_RENTAL, customer.getId(), rental.getId());
             session.getTransaction().commit();
         } catch (Exception e) {
-            log.log(Level.ERROR, "Couldn't return film with", e);
+            log.log(Level.ERROR, LogConstants.FAILED_RETURN_RENTAL, e);
         }
     }
 
@@ -138,13 +138,12 @@ public class Main {
         try (Session session = sessionFactory.getCurrentSession()) {
             session.beginTransaction();
 
-            //todo getFirstAvailableFilm
             Store store = storeDAO.getById(1L);
 
             Staff staff = store.getStaff();
             Customer customer = customerDAO.findById(554L);
             Inventory inventory = new Inventory();
-            inventory.setFilm(filmDAO.findById(12L));
+            inventory.setFilm(filmDAO.getFirstAvailableFilm());
             inventory.setStore(store);
             inventoryDAO.save(inventory);
 
@@ -156,10 +155,10 @@ public class Main {
 
             rentalDAO.save(rental);
 
-            log.log(Level.INFO, "-----------Rental created with id {}", rental.getId());
+            log.log(Level.INFO, LogConstants.SUCCESSFUL_TAKE_NEW_RENTAL, rental.getId());
             session.getTransaction().commit();
         } catch (Exception e) {
-            log.log(Level.ERROR, "Couldn't add new rental with", e);
+            log.log(Level.ERROR, LogConstants.FAILED_TAKE_NEW_RENTAL, e);
         }
     }
 
@@ -196,9 +195,10 @@ public class Main {
 
 
             session.getTransaction().commit();
+            log.log(Level.INFO, LogConstants.SUCCESSFUL_CREATE_NEW_FILM, film.getId());
             return film;
         } catch (Exception e) {
-            log.log(Level.ERROR, "Couldn't add new film with", e);
+            log.log(Level.ERROR, LogConstants.FAILED_CREATE_FILM, e);
         }
         return null;
     }
