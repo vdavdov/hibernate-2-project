@@ -2,6 +2,7 @@ package by.vdavdov.dao;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.query.Query;
 
 import java.util.List;
 
@@ -12,6 +13,14 @@ public abstract class BaseDAO<T> {
     public BaseDAO(final Class<T> clazz, SessionFactory sessionFactory) {
         this.clazz = clazz;
         this.sessionFactory = sessionFactory;
+    }
+
+    public List<T> getItems(int offset, int limit) {
+        final Session session = sessionFactory.getCurrentSession();
+        Query<T> query = session.createQuery("from " + clazz.getSimpleName(), clazz);
+        query.setFirstResult(offset);
+        query.setMaxResults(limit);
+        return query.list();
     }
 
     public T findById(final Long id) {

@@ -1,6 +1,8 @@
 package by.vdavdov;
 
 
+import by.vdavdov.constants.FeaturesEnum;
+import by.vdavdov.constants.RatingEnum;
 import by.vdavdov.dao.*;
 import by.vdavdov.entity.*;
 import lombok.Getter;
@@ -10,7 +12,12 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.time.Year;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @Log4j2
 @Getter
@@ -71,8 +78,10 @@ public class Main {
         Main main = new Main();
         Customer customer = main.addNewCustomer();
         System.out.println(customer);
-        System.out.println(main.returnFilm());
+        main.returnFilm();
         main.addNewRental();
+        Film film = main.addNewFilm();
+        System.out.println(film);
     }
 
     public Customer addNewCustomer() {
@@ -109,7 +118,7 @@ public class Main {
         return null;
     }
 
-    public Customer returnFilm() {
+    public void returnFilm() {
         try (Session session = sessionFactory.getCurrentSession()) {
             session.beginTransaction();
             Customer customer = customerDAO.findById(64L);
@@ -120,20 +129,24 @@ public class Main {
 
             log.log(Level.INFO, "-----------Customer {} successfully return film", customer.getId() + "---------------");
             session.getTransaction().commit();
-            return customer;
         } catch (Exception e) {
             log.log(Level.ERROR, "Couldn't return film with", e);
         }
-        return null;
     }
 
     public void addNewRental() {
         try (Session session = sessionFactory.getCurrentSession()) {
             session.beginTransaction();
 
-            Staff staff = staffDAO.findById(1L);
+            //todo getFirstAvailableFilm
+            Store store = storeDAO.getById(1L);
+
+            Staff staff = store.getStaff();
             Customer customer = customerDAO.findById(554L);
-            Inventory inventory = inventoryDAO.findById(1L);
+            Inventory inventory = new Inventory();
+            inventory.setFilm(filmDAO.findById(12L));
+            inventory.setStore(store);
+            inventoryDAO.save(inventory);
 
             Rental rental = new Rental();
             rental.setStaff(staff);
@@ -150,5 +163,43 @@ public class Main {
         }
     }
 
+    public Film addNewFilm() {
+        try (Session session = sessionFactory.getCurrentSession()) {
+            session.beginTransaction();
 
+            Language language = languageDAO.findById(1L);
+
+            List<Category> categories = categoryDAO.getItems(0, 5);
+            List<Actor> actors = actorDAO.getItems(0, 10);
+
+
+            Film film = new Film();
+            film.setTitle("Very new film");
+            film.setDescription("It is so new film, u need to see this...");
+            film.setYear(Year.now());
+            film.setLanguage(language);
+            film.setRentalDuration((byte) 9);
+            film.setRentalRate(BigDecimal.valueOf(0.99));
+            film.setLength((short) 120);
+            film.setReplacementCost(BigDecimal.valueOf(30.99));
+            film.setRating(RatingEnum.PG);
+            film.setActors(new HashSet<>(actors));
+            film.setCategories(new HashSet<>(categories));
+            film.setSpecialFeatures(Set.of(FeaturesEnum.Commentaries, FeaturesEnum.Trailers, FeaturesEnum.Deleted_Scenes));
+            filmDAO.save(film);
+
+            FilmText filmText = new FilmText();
+            filmText.setFilm(film);
+            filmText.setDescription("welcome to very new film");
+            filmText.setTitle("Very new film");
+            filmTextDAO.save(filmText);
+
+
+            session.getTransaction().commit();
+            return film;
+        } catch (Exception e) {
+            log.log(Level.ERROR, "Couldn't add new film with", e);
+        }
+        return null;
+    }
 }

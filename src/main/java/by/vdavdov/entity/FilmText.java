@@ -14,9 +14,6 @@ import lombok.Setter;
 @Table(name = "film_text", schema = "movie")
 public class FilmText {
     @Id
-    @Column(name = "film_id")
-    private Short id;
-
     @OneToOne
     @JoinColumn(name = "film_id")
     private Film film;
